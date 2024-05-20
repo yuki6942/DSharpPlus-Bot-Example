@@ -22,7 +22,7 @@ To set up this template repository, follow these steps:
    ```
    cd DSharpPlus-Bot-Example/DSharpPlus-Bot-Example
    dotnet user-secrets init
-   dotnet user-secrets set "DB_STRING" "YOUR_NPSQL_STRING"
+   dotnet user-secrets set "DISCORD_TOKEN" "YOUR_TOKEN"
    dotnet user-secrets set "DB_STRING" "YOUR_POSTGRES_STRING
 
 ### Contributing
