@@ -2,8 +2,11 @@
 using DSharpPlus.Commands;
 using DSharpPlus.Commands.EventArgs;
 using DSharpPlus.Commands.Exceptions;
+using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Npgsql.Replication.TestDecoding;
 
 namespace ExampleBot.Events;
 
@@ -21,6 +24,7 @@ public class ExampleBotEventHandler
         this._client = client;
         this._config = config;
         // this._client.Event += your_function; 
+        this._client.ComponentInteractionCreated += OnComponentInteractionCreateAsync;
     }
     
 #pragma warning disable CA1822
@@ -43,6 +47,18 @@ public class ExampleBotEventHandler
             await e.Context.DeferResponseAsync();
         }
         
+    }
+
+    private async Task OnComponentInteractionCreateAsync(DiscordClient sender, ComponentInteractionCreateEventArgs args)
+    {
+        if (args.Interaction.Data.CustomId == "test")
+        {
+            await args.Interaction.CreateResponseAsync(
+                DiscordInteractionResponseType.ChannelMessageWithSource,
+                new DiscordInteractionResponseBuilder(
+                    new DiscordMessageBuilder().WithContent("hello")).AsEphemeral());
+            
+        }
     }
     
     

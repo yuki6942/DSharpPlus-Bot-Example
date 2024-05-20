@@ -46,7 +46,6 @@ public class User
     [Command("button")]
     public async Task TestCommandAsync(CommandContext ctx)
     {
-        InteractivityExtension interactivity = ctx.Client.GetInteractivity();
         DiscordButtonComponent button = new DiscordButtonComponent(
             DiscordButtonStyle.Success,
             "test",
@@ -57,16 +56,6 @@ public class User
             .AddComponents(button);
         
         await ctx.RespondAsync(sendMessage);
-        
-        // Button interaction with DSharpPlus.Interactivity
-        InteractivityResult<ComponentInteractionCreateEventArgs> result = await interactivity.WaitForButtonAsync(await ctx.GetResponseAsync(), ctx.User);
-        if (result.Result.Id == "test")
-        {
-            await result.Result.Interaction.CreateResponseAsync(
-                DiscordInteractionResponseType.ChannelMessageWithSource,
-                new DiscordInteractionResponseBuilder(
-                    new DiscordMessageBuilder().WithContent("hello")).AsEphemeral());
-        }
     }
     
 }
