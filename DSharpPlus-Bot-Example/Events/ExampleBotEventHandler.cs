@@ -6,7 +6,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Npgsql.Replication.TestDecoding;
 
 namespace ExampleBot.Events;
 
@@ -23,7 +22,7 @@ public class ExampleBotEventHandler
         this._services = services;
         this._client = client;
         this._config = config;
-        // this._client.Event += your_function; 
+        // subscribe to event
         this._client.ComponentInteractionCreated += OnComponentInteractionCreateAsync;
     }
     
@@ -51,13 +50,14 @@ public class ExampleBotEventHandler
 
     private async Task OnComponentInteractionCreateAsync(DiscordClient sender, ComponentInteractionCreateEventArgs args)
     {
-        if (args.Interaction.Data.CustomId == "test")
+        switch (args.Interaction.Data.CustomId)
         {
-            await args.Interaction.CreateResponseAsync(
-                DiscordInteractionResponseType.ChannelMessageWithSource,
-                new DiscordInteractionResponseBuilder(
-                    new DiscordMessageBuilder().WithContent("hello")).AsEphemeral());
-            
+            case "test":
+                await args.Interaction.CreateResponseAsync(
+                    DiscordInteractionResponseType.ChannelMessageWithSource,
+                    new DiscordInteractionResponseBuilder(
+                        new DiscordMessageBuilder().WithContent("hello")).AsEphemeral());
+                break;
         }
     }
     
